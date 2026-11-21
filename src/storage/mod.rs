@@ -12,3 +12,6 @@ pub trait TaskRepository {
     fn update(&mut self, task: Task) -> Result<()>;
     fn delete(&mut self, id: TaskId) -> Result<()>;
 }
+
+pub use json_repository::{JsonRepository};
+pub use in_memory::{InMemoryRepository};
