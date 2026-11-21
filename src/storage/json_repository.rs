@@ -3,7 +3,7 @@ use std::fs::{self, File};
 use std::io::{ErrorKind, Write};
 use std::path::{Path, PathBuf};
 
-use crate::storage::TaskReposiyory;
+use crate::storage::TaskRepository;
 use crate::{
     domain::task::{Task, TaskId},
     error::{Result, TaskError},
@@ -74,7 +74,7 @@ impl JsonRepository {
     }
 }
 
-impl TaskReposiyory for JsonRepository {
+impl TaskRepository for JsonRepository {
     fn next_id(&self) -> Result<TaskId> {
         let next = self.tasks.keys().next_back().map_or(1, |id| id.value() + 1);
         Ok(TaskId::new(next))

@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use crate::{
     domain::{Task, TaskId},
     error::{Result, TaskError},
-    storage::TaskReposiyory,
+    storage::TaskRepository,
 };
 
 #[derive(Debug, Default)]
@@ -17,7 +17,7 @@ impl InMemoryRepository {
     }
 }
 
-impl TaskReposiyory for InMemoryRepository {
+impl TaskRepository for InMemoryRepository {
     fn next_id(&self) -> Result<TaskId> {
         // son anahtar en büyüktür. (btreemap sıralı) Boş ise 1'den başla.
         let next = self.tasks.keys().next_back().map_or(1, |id| id.value() + 1);

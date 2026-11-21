@@ -3,15 +3,15 @@ use chrono::Utc;
 use crate::{
     domain::{Task, TaskId},
     error::{Result, TaskError},
-    storage::TaskReposiyory,
+    storage::TaskRepository,
 };
 
 pub const MAX_TITLE_LEN: usize = 100;
 
-pub struct TaskService<R: TaskReposiyory> {
+pub struct TaskService<R: TaskRepository> {
     repo: R,
 }
-impl<R: TaskReposiyory> TaskService<R> {
+impl<R: TaskRepository> TaskService<R> {
     pub fn new(repo: R) -> Self {
         Self { repo }
     }

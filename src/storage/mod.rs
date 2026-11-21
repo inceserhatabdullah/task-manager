@@ -4,7 +4,7 @@ pub mod json_repository;
 use crate::domain::{Task, TaskId};
 use crate::error::Result;
 
-pub trait TaskReposiyory {
+pub trait TaskRepository {
     fn next_id(&self) -> Result<TaskId>;
     fn add(&mut self, task: Task) -> Result<()>;
     fn get(&self, id: TaskId) -> Result<Option<Task>>;
