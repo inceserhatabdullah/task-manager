@@ -4,7 +4,7 @@ use commands::Command;
 use std::io::Write;
 
 use crate::{
-    domain::{Task, TaskId, TaskStatus},
+    domain::{Task, TaskId},
     error::Result,
     service::TaskService,
     storage::TaskRepository,
@@ -19,16 +19,12 @@ pub fn execute<R: TaskRepository>(
     match command {
         Command::Add { title } => {
             let task = service.add(&title)?;
-            writeln!(
-                out,
-                "{} görev olarak eklendi.",
-                format_task(&task)
-            )?;
+            writeln!(out, "{} eklendi.", format_task(&task))?;
         }
         Command::List => {
             let tasks = service.list()?;
             if tasks.is_empty() {
-                writeln!(out, "Henüz görev yok.")?;
+                writeln!(out, "{{}}")?;
             }
 
             for task in tasks {
@@ -37,11 +33,12 @@ pub fn execute<R: TaskRepository>(
         }
         Command::Done { id } => {
             let task = service.complete(TaskId::new(id))?;
-            writeln!(out, "{} görev tamamlandı.", format_task(&task))?;
+            writeln!(out, "{} tamamlandı.", format_task(&task))?;
         }
         Command::Delete { id } => {
+            let task = service.find(TaskId::new(id))?;
             service.delete(TaskId::new(id))?;
-            writeln!(out, "#{} numaralı görev silindi.", TaskId::new(id))?;
+            writeln!(out, "{} silindi.", format_task(&task))?;
         }
     }
     Ok(())
@@ -75,7 +72,7 @@ mod tests {
                 title: "ekmek al".into(),
             },
         );
-        assert!(out.contains("Eklendi"));
+        assert!(out.contains("eklendi"));
         assert!(out.contains("ekmek al"));
     }
 
@@ -83,7 +80,7 @@ mod tests {
     fn list_on_empty_repository_says_so() {
         let mut service = service();
         let out = run(&mut service, Command::List);
-        assert!(out.contains("Henüz görev yok."));
+        assert!(out.contains("{}"));
     }
 
     #[test]
@@ -96,7 +93,7 @@ mod tests {
             },
         );
         let out = run(&mut service, Command::Done { id: 1 });
-        assert!(out.contains("Tamamlandı"));
+        assert!(out.contains("tamamlandı"));
     }
 
     #[test]

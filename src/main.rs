@@ -21,7 +21,7 @@ fn main() -> ExitCode {
     match run() {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) => {
-            eprintln!("Hata: {e}");
+            eprintln!("{e}");
             ExitCode::FAILURE
         }
     }

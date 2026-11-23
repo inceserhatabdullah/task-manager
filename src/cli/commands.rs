@@ -15,6 +15,9 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+    // clap kebab-case olarak otomatik parse ediyor. Add -> add, Delete -> delete vs.
+    // command atayarak da ismini güncelleyebilirsin.
+    #[command(name = "add")]
     Add { title: String },
     List,
     Done { id: u64 },
